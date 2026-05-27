@@ -1,0 +1,27 @@
+name: Treo Bot 24/7
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */3 * * *' # Tự khởi động lại mỗi 3 tiếng để bot không bị ngủ đông
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cài đặt Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Cài đặt thư viện và Chạy Bot
+      env:
+        COOKIE: ${{ secrets.COOKIE }}
+      run: |
+        npm install
+        node index.js
